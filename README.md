@@ -39,8 +39,36 @@ CUDA_LIB和CUDNN_LIB(二者相同),OPENCV_DIR和OpnCV_DIR(二者相同),PADDLE_L
 ![QQ_1721284514821](https://github.com/user-attachments/assets/d49d4cd2-80ca-4b02-8794-1284480936d8)
 点击确定-应用后重新点生成-生成解决方案即可正常生成
 
-之后.将需要的.dll文件复制进D:\projects\cpp\PaddleOCR\deploy\cpp_infer\build\Release路径下,注意
+之后.将需要的.dll文件复制进D:\projects\cpp\PaddleOCR\deploy\cpp_infer\build\Release路径下,注意官方文档中的好像不全,之后运行的时候会报错,以下是我实际使用时复制进去的所有.dll文件:  
+D:\projects\paddle_inference\paddle\lib下的common.dll和paddle_inference.dll  
+D:\projects\paddle_inference\third_party\install\mklml\lib下的libiomp5md.dll和mklml.dll  
+D:\projects\paddle_inference\third_party\install\onednn\lib下的mkldnn.dll  
+D:\projects\cpp\opencv\build\x64\vc16\bin下的opencv_world4100.dll  
+最终Release文件夹下应有6个.dll文件和一个.exe文件
 
+然后需要下载ppocr模型文件,在[https://github.com/PaddlePaddle/PaddleOCR] 往下翻到下图处,我下载的如图所示
+<img width="495" alt="QQ_1721284951583" src="https://github.com/user-attachments/assets/8d2bf836-b66a-42e0-9a94-750fe000f463">
+下载后在D:\projects\cpp\PaddleOCR\deploy\cpp_infer下新建一个inference文件夹并解压至该文件夹下  
 
+总算是完成了所有的准备,可以开始使用了
+打开cmd运行以下命令
+```bash
+cd /d D:\projects\cpp\PaddleOCR\deploy\cpp_infer
+CHCP 65001
+.\build\Release\ppocr.exe system --use_gpu=True --det_model_dir=D:\projects\cpp\PaddleOCR\deploy\cpp_infer\inference\ch_PP-OCRv4_det_infer --rec_model_dir=D:\projects\cpp\PaddleOCR\deploy\cpp_infer\inference\ch_PP-OCRv4_rec_infer --image_dir=E:\ocr\data\img\916726333727933677110_1.jpeg
+```
+注意修改自己的图片路径,这里是检测的单张图,而ppocr同时支持一次性识别一个文件夹下的所有图片,将image_dir后面的路径换成文件夹路径即可
+此处我遇到了第二个报错,信息如下:
+```bash
+PreconditionNotMetError: The third-party dynamic library (cublas64_120.dll;cublas64_12.dll) that Paddle depends on is not configured correctly. (error code is 126)
+  Suggestions:
+  1. Check if the third-party dynamic library (e.g. CUDA, CUDNN) is installed correctly and its version is matched with paddlepaddle you installed.
+  2. Configure third-party dynamic library environment variables as follows:
+  - Linux: set LD_LIBRARY_PATH by `export LD_LIBRARY_PATH=...`
+  - Windows: set PATH by `set PATH=XXX;%PATH%`
+  - Mac: set  DYLD_LIBRARY_PATH by `export DYLD_LIBRARY_PATH=...` [Note: After Mac OS 10.11, using the DYLD_LIBRARY_PATH is impossible unless System Integrity Protection (SIP) is disabled.] (at C:\home\workspace\Paddle\paddle\phi\backends\dynload\dynamic_loader.cc:340)
+```
+解决方法为:进入C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\bin(或你的cuda安装位置的对应路径),找到cublas64_11.dll,复制一份并且重命名为cublas64_12.dll即可解决
 
-
+接下来即可正常使用了,如果你按照我的方法出现了其他问题欢迎讨论(虽然我也很菜大概率也不会(((  
+最后更新日期:2024.7.18
