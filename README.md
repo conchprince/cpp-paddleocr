@@ -11,7 +11,7 @@ CUDA 10.2，cudnn 7+ （仅在使用GPU版本的预测库时需要）
 CMake 3.22+  
 实际使用时可以参考[https://www.paddlepaddle.org.cn/inference/master/guides/install/download_lib.html](https://www.paddlepaddle.org.cn/inference/master/guides/install/download_lib.html)根据机器情况选择,我使用的Windows 10系统,Visual Studio 2022,并且此前为了用pytorch等使用的是cuda11.8,故选择此处第三个.如何准备这些环境网上有很多教程,此处就不在赘述(安装过程中踩的坑和解决方法全部基于本环境,如果想跟着本文档一次性部署好建议准备上述环境) 
 
-![QQ_1721281966173](https://github.com/user-attachments/assets/5bb2d1bd-f8d5-4185-a001-f99b66a24022)   
+![QQ_1721286450622](https://github.com/user-attachments/assets/ae2bf0b9-881c-4476-87bc-5921c54de160)
 
 此外,还需要下载PaddlePaddleC++和OpenCV,其中PaddlePaddleC++在上面的链接里,下载好zip后解压至D:\projects  
 
@@ -28,19 +28,17 @@ D:\projects\
     └── paddle_inference
 ```
 
-## 开始运行  
+## 生成解决方案 
 
 打开cmake-gui,按下图选择路径  
 
-![QQ_1721283285074](https://github.com/user-attachments/assets/b73ed7f3-94d5-4668-b0cc-b99355f4acc5)  
+![QQ_1721286526047](https://github.com/user-attachments/assets/e1631d12-9264-437a-ac12-fcdf8398ce7f)
 
 点击下方的Configure,在弹出的界面中第一栏选择Visual Studio 17 2022,第二栏填x64,剩下的不用管点finish即可  
 第一次运行会报错,接下来按如下图补充相关路径(如果你的路径跟图中的不一样请按实际填写)
 
-![QQ_1721283602421](https://github.com/user-attachments/assets/a5d4c0ed-bb74-40cf-9981-b002eaf83d39)
-
+![QQ_1721286625135](https://github.com/user-attachments/assets/76590388-2a28-4633-996e-2946166c1a26)
 注:需要补充的路径为:CUDA_LIB和CUDNN_LIB(二者相同),OPENCV_DIR和OpnCV_DIR(二者相同),PADDLE_LIB,勾选WITH_GPU
-
 
 然后依次点击Configure,Generate和Open Project即可  
 此时已经在Visual Studio中打开了项目,在生成解决方案之前,先把Debug改成Release,然后下载[https://paddleocr.bj.bcebos.com/deploy/cpp_infer/cpp_files/dirent.h](https://paddleocr.bj.bcebos.com/deploy/cpp_infer/cpp_files/dirent.h)并复制到Visual Studio的include文件夹下(在我的电脑上路径为D:\vscode\VC\Auxiliary\VS\include)  
@@ -48,11 +46,13 @@ D:\projects\
 点击生成-生成解决方案,此时我遇到了setlocal报错,解决方法如下:  
 在右侧的解决方案资源管理器中选中ppocr,然后在项目-属性-配置属性-生存事件-生成后事件-命令行,选中后点击右边的下拉栏,点击编辑后,删掉上方有关mkldnn的几行,最后保留的如图
 
-![QQ_1721284514821](https://github.com/user-attachments/assets/d49d4cd2-80ca-4b02-8794-1284480936d8)
+![QQ_1721286754440](https://github.com/user-attachments/assets/88116c6b-f060-4151-bc1d-a30802ee75c9)
 
 点击确定-应用后重新点生成-生成解决方案即可正常生成解决方案
 
-之后,将运行所需的.dll文件复制进D:\projects\cpp\PaddleOCR\deploy\cpp_infer\build\Release路径下,官方文档中的好像不全,之后运行的时候会报错,以下是我实际使用时复制进去的所有.dll文件:  
+## 开始运行
+
+首先,将运行所需的.dll文件复制进D:\projects\cpp\PaddleOCR\deploy\cpp_infer\build\Release路径下,官方文档中的好像不全,之后运行的时候会报错,以下是我实际使用时复制进去的所有.dll文件:  
 D:\projects\paddle_inference\paddle\lib下的common.dll和paddle_inference.dll  
 D:\projects\paddle_inference\third_party\install\mklml\lib下的libiomp5md.dll和mklml.dll  
 D:\projects\paddle_inference\third_party\install\onednn\lib下的mkldnn.dll  
@@ -64,8 +64,6 @@ D:\projects\cpp\opencv\build\x64\vc16\bin下的opencv_world4100.dll
 <img width="495" alt="QQ_1721284951583" src="https://github.com/user-attachments/assets/8d2bf836-b66a-42e0-9a94-750fe000f463">
 
 下载后在D:\projects\cpp\PaddleOCR\deploy\cpp_infer下新建一个inference文件夹并解压至该文件夹下  
-
-总算是完成了所有的准备,可以开始使用了
 
 打开cmd运行以下命令
 ```bash
