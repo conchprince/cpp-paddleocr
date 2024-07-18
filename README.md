@@ -1,4 +1,4 @@
-# Windows10 C++下部署PaddleOCR(gpu)完整过程
+## Windows10 C++下部署PaddleOCR(gpu)完整过程
 由于实习需要,在c++下部署paddleocr,大致流程参考官方文档:
 [https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/cpp_infer/docs/windows_vs2019_build.md](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/cpp_infer/docs/windows_vs2019_build.md)   
 由于平常一般都是用python,尽管很久以前学过c++但是也忘得差不多了,几乎可以算是纯新手,过程中遇到很多坑,故在此记录完整流程以便后续使用或其他小白们参考,所以很多地方会写的比较详细   
