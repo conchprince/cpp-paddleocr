@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <regex>
 #include <string>
@@ -61,7 +61,7 @@ int main() {
     std::string imagesPath = "E:\\ocr\\data\\ai_img\\"; // 图像文件夹路径
 
     // 调用 OCR 模型，并获取输出
-    std::string execCommand = "cd /d D:\\projects\\cpp\\PaddleOCR\\deploy\\cpp_infer && .\\build\\Release\\ppocr.exe system --det_model_dir=D:\\projects\\cpp\\PaddleOCR\\deploy\\cpp_infer\\inference\\ch_PP-OCRv4_det_infer --rec_model_dir=D:\\projects\\cpp\\PaddleOCR\\deploy\\cpp_infer\\inference\\ch_PP-OCRv4_rec_infer --image_dir=" + imagesPath;
+    std::string execCommand = "cd /d D:\\projects\\cpp\\PaddleOCR\\deploy\\cpp_infer && .\\build\\Release\\ppocr.exe system --use_gpu=True --det_model_dir=D:\\projects\\cpp\\PaddleOCR\\deploy\\cpp_infer\\inference\\ch_PP-OCRv4_det_infer --rec_model_dir=D:\\projects\\cpp\\PaddleOCR\\deploy\\cpp_infer\\inference\\ch_PP-OCRv4_rec_infer --image_dir=" + imagesPath;
     std::string ocrOutput = "";
     
 
@@ -79,6 +79,7 @@ int main() {
     const int images_num = 338; // 测试集图片数量
     std::string ocr_results[images_num][2];
 
+    // 获取ocr结果，拼接后存放在二维字符串数组中(以下代码基于使用的模型和数据标注、文件名等情况编写,如果更换模型输出方式以及使用不同格式的标注、文件名等请自行替换内部逻辑）
     int p = 0;
     for (int i = 0; i < images_num; i++) {
         int q = ocrOutput.find("predict", p); 
@@ -117,7 +118,7 @@ int main() {
     auto end_total = std::chrono::high_resolution_clock::now(); // 记录结束时间
     std::chrono::duration<double> elapsed = end - start;
     std::chrono::duration<double> elapsed_total = end_total - start_total;
-    total_wer /= images_num;
+    total_wer /= images_num; 
     double accuracy = (1 - total_wer) * 100;
     double pps = images_num / elapsed.count();
     std::cout << "wer:" << total_wer << std::endl;
