@@ -84,5 +84,4 @@ PreconditionNotMetError: The third-party dynamic library (cublas64_120.dll;cubla
 ```
 解决方法为:进入C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\bin(或你的cuda安装位置的对应路径),找到cublas64_11.dll,复制一份并且重命名为cublas64_12.dll即可解决
 
-接下来即可正常使用了,如果你按照我的方法出现了其他问题欢迎讨论(虽然我也很菜大概率也不会(((  
 最后更新日期:2024.7.18
